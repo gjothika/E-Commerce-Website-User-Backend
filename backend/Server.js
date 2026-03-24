@@ -240,6 +240,32 @@ app.post("/login", async (req, res) => {
   });
 });
 
+app.post("/register", async (req, res) => {
+  try {
+    const { FirstName, LastName, Email, Password } = req.body;
+
+    const existingUser = await User.findOne({ Email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const newUser = new User({
+      FirstName,
+      LastName,
+      Email,
+      Password,
+    });
+
+    await newUser.save();
+
+    res.status(200).json({ message: "Registered Successfully" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.post("/cart", async (req,res)=>{
 
