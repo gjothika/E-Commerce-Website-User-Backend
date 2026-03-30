@@ -515,6 +515,18 @@ app.put("/orderstatus/:id", async (req,res)=>{
  }
 })
 
+app.delete("/address/:id", async (req, res) => {
+  try {
+    const deleted = await Address.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.get("/cart",async(req,res)=>{
   const carts = await Cart.find({});
   res.json(carts);
